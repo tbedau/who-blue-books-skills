@@ -17,10 +17,10 @@ If the user doesn't specify a book, show them the book IDs table from the core r
 Retrieve the full table of contents:
 
 ```bash
-who-api-client chapters <book_id> --max-depth 2
+who-api-client chapters <book_id>
 ```
 
-Each line in the output includes the numeric chapter ID in brackets (e.g., `📄 [42] 2.1.2.1 - Adenocarcinoma`). Use these IDs for subsequent `content`, `tables`, and `attachments` commands.
+Each line is `<chapter ID> <tab> <number> <title>`, indented by depth (e.g., `42	2.1.2.1 Adenocarcinoma`). Use these IDs for subsequent `content`, `tables`, and `attachments` commands.
 
 Understand the chapter hierarchy, the number of entities, and how the WHO organizes the content. You must account for **every chapter/section** — no content should be left unassigned to a cluster.
 

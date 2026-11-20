@@ -38,14 +38,14 @@ For standalone requests, search for the relevant chapters yourself using the CLI
 For each WHO section in the cluster, retrieve:
 
 ```bash
-# Full chapter content (markdown gives clean text, no HTML)
-who-api-client content <book_id> <chapter_id> --format markdown
+# Full chapter content as markdown; several chapters of one book in one call
+who-api-client content <book_id> <chapter_id> [<chapter_id> ...] --no-refs
 
 # Tables (classification schemes, IHC panels, differential diagnosis matrices)
 who-api-client tables <book_id> <chapter_id>
 
-# Figure legends (rich morphologic detail not in the text)
-who-api-client attachments <book_id> <chapter_id> --type figure --format json
+# Figure legends (rich morphologic detail not in the text): TSV of id, type, diagnosis, legend
+who-api-client attachments <book_id> <chapter_id> --type figure
 ```
 
 Also check introduction/overview chapters for the relevant organ system — they often contain classification tables and differential frameworks.

@@ -21,6 +21,12 @@ uv tool install who-api-client
 # or: pip install who-api-client
 ```
 
+The skill needs `who-api-client` **0.4.0 or newer**. Check with `uv tool list`, and upgrade with `uv tool upgrade who-api-client`. If 0.4.0 is not on PyPI yet, install it from GitHub:
+
+```bash
+uv tool install git+https://github.com/tbedau/who-api-client
+```
+
 ### 2. Authenticate
 
 ```bash
@@ -69,18 +75,19 @@ Paste the contents of `who-blue-books/SKILL.md` into your agent as a system prom
 
 ```
 who-blue-books/
-  SKILL.md              # Main skill: routing + core reference (CLI, book IDs, section structure)
+  SKILL.md              # Main skill: routing, the Lookup workflow, core reference (CLI, book IDs, section structure)
   references/
-    lookup.md           # Workflow for ad-hoc questions (lookups, comparisons, differentials)
     study-plan.md       # Workflow for generating structured study plans
     deep-dive.md        # Workflow for comprehensive teaching reviews (quality centerpiece)
 ```
 
-The skill uses [progressive disclosure](https://agentskills.io/specification#progressive-disclosure): the agent loads `SKILL.md` on activation, then reads only the relevant workflow reference file based on what you ask for.
+The skill uses [progressive disclosure](https://agentskills.io/specification#progressive-disclosure): the agent loads `SKILL.md` on activation. Lookups, the most common request, are handled from that file alone; for a study plan or a deep dive the agent reads the matching reference file.
+
+A typical lookup takes two CLI calls: `search` finds the chapter, and `content` returns just the sections or sub-headings the question needs (for example `--sections "Grading"`).
 
 | Workflow | Loaded when... | Output |
 |----------|---------------|--------|
-| **Lookup** | You ask a specific question: "What is GIST?", "FL vs MCL?", "Diagnostic criteria for phyllodes tumour?" | Focused answer with WHO citations |
+| **Lookup** (in `SKILL.md`) | You ask a specific question: "What is GIST?", "FL vs MCL?", "Diagnostic criteria for phyllodes tumour?" | Focused answer with WHO citations |
 | **Study Plan** | You want to work through a Blue Book systematically: "I want to study Endocrine and Neuroendocrine Tumours" | Themed clusters with deep dive prompts |
 | **Deep Dive** | You want comprehensive teaching on a topic, standalone or from a study plan | 2000-4000 word teaching review |
 
@@ -207,7 +214,7 @@ For optimal learning, follow this evidence-based pipeline:
 
 ## Customization
 
-These skills are yours to modify. Edit any of the workflow files in `references/` to match your learning style — change the output format, adjust content priorities, add emphasis on areas you care about, or tweak the tone.
+These skills are yours to modify. Edit `SKILL.md` or the workflow files in `references/` to match your learning style — change the output format, adjust content priorities, add emphasis on areas you care about, or tweak the tone.
 
 You can also ask your agent to create entirely new workflows. The skill uses [progressive disclosure](https://agentskills.io/specification#progressive-disclosure), so adding a new capability is as simple as writing a new reference file and adding a routing entry in `SKILL.md`. For example, you could ask your agent: "Add a new workflow that generates Anki flashcard decks from WHO chapters" — and it can create the reference file and wire it up for you.
 
@@ -231,7 +238,7 @@ This is an unofficial, community-built skill system. It is not affiliated with, 
 - **This is not medical advice.** All AI-generated output must be independently verified by a qualified professional. Use entirely at your own risk.
 - A valid WHO Classification of Tumours subscription is required
 - All content accessed through `who-api-client` is subject to the [IARC/WHO Terms of Use](https://publications.iarc.who.int/Terms-Of-Use)
-- This system generates synthesized teaching material — it does not store or redistribute WHO content
+- This skill generates synthesized teaching material and does not redistribute WHO content. `who-api-client` keeps a private cache of the chapters you read on your own machine (`who-api-client cache clear` removes it)
 - The underlying API is undocumented and may change without notice
 
 ## License
